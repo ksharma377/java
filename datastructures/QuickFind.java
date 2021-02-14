@@ -1,7 +1,7 @@
 package java.datastructures;
 
-public final class QuickFindUF {
-  public QuickFindUF(int n) {
+public final class QuickFind {
+  public QuickFind(int n) {
     id = new int[n];
     for (int i = 0; i < n; i++) {
       id[i] = i;
