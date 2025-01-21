@@ -11,29 +11,31 @@ public final class TopologicalOrdering {
     g.addEdge(4, 1);
     g.addEdge(2, 3);
     g.addEdge(3, 1);
-    System.out.println(g.getTopologicalOrdering());
+    g.getAllTopologicalOrderings().forEach(System.out::println);
   }
 }
 
 class Graph {
-  public Graph(int V) {
-    this.V = V;
-    adj = new LinkedList[V];
-    for (int i = 0; i < V; i++) {
+  public Graph(int n) {
+    this.n = n;
+    adj = new LinkedList[n];
+    for (int i = 0; i < n; i++) {
       adj[i] = new LinkedList<Integer>();
     }
+    indegree = new int[n];
   }
 
-  public void addEdge(int v, int w) {
-    adj[v].add(w);
+  public void addEdge(int u, int v) {
+    adj[u].add(v);
+    indegree[v]++;
   }
 
   public List<Integer> getTopologicalOrdering() {
     Stack<Integer> stack = new Stack<Integer>();
-    boolean[] visited = new boolean[V];
-    for (int i = 0; i < V; i++) {
+    boolean[] visited = new boolean[n];
+    for (int i = 0; i < n; i++) {
       if (!visited[i]) {
-        topologicalOrderingUtil(i, visited, stack);
+        getTopologicalOrderingUtil(i, visited, stack);
       }
     }
     List<Integer> topologicalOrdering = new LinkedList<Integer>();
@@ -43,16 +45,53 @@ class Graph {
     return topologicalOrdering;
   }
 
-  private void topologicalOrderingUtil(int v, boolean[] visited, Stack<Integer> stack) {
+  private void getTopologicalOrderingUtil(int v, boolean[] visited, Stack<Integer> stack) {
     visited[v] = true;
     for (int i : adj[v]) {
       if (!visited[i]) {
-        topologicalOrderingUtil(i, visited, stack);
+        getTopologicalOrderingUtil(i, visited, stack);
       }
     }
     stack.push(v);
   }
 
-  private int V;
+  public List<List<Integer>> getAllTopologicalOrderings() {
+    List<List<Integer>> allTopologicalOrderings = new LinkedList<List<Integer>>();
+    boolean[] visited = new boolean[n];
+    getAllTopologicalOrderingsUtil(new LinkedList<Integer>(), allTopologicalOrderings, visited);
+    return allTopologicalOrderings;
+  }
+
+  private void getAllTopologicalOrderingsUtil(
+      List<Integer> ordering, List<List<Integer>> orderings, boolean[] visited) {
+    if (ordering.size() == n) {
+      orderings.add(new LinkedList<Integer>(ordering));
+      return;
+    }
+    for (int i = 0; i < n; i++) {
+      if (indegree[i] == 0 && !visited[i]) {
+        ordering.add(i);
+        visited[i] = true;
+        for (int j : adj[i]) {
+          indegree[j]--;
+        }
+        getAllTopologicalOrderingsUtil(ordering, orderings, visited);
+        ordering.remove(ordering.size() - 1);
+        visited[i] = false;
+        for (int j : adj[i]) {
+          indegree[j]++;
+        }
+      }
+    }
+  }
+
+  public void print() {
+    for (int i = 0; i < n; i++) {
+      System.out.println(i + ": " + adj[i]);
+    }
+  }
+
+  private int n;
   private List<Integer>[] adj;
+  private int[] indegree;
 }
