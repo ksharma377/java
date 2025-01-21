@@ -1,2 +1,1 @@
-# java
-Java Libraries
+Data Structures and Algorithms implemented in Java.
