@@ -4,22 +4,22 @@ import java.util.Stack;
 
 public final class TopologicalOrdering {
   private static class Graph {
-    private int n;
+    private int numVertices;
     private List<Integer>[] adj;
     private int[] indegree;
 
-    public Graph(int n) {
-      this.n = n;
-      adj = new LinkedList[n];
-      for (int i = 0; i < n; i++) {
+    public Graph(int numVertices) {
+      this.numVertices = numVertices;
+      adj = new LinkedList[numVertices];
+      for (int i = 0; i < numVertices; i++) {
         adj[i] = new LinkedList<Integer>();
       }
-      indegree = new int[n];
+      indegree = new int[numVertices];
     }
 
-    public void addEdge(int u, int v) {
-      adj[u].add(v);
-      indegree[v]++;
+    public void addEdge(int from, int to) {
+      adj[from].add(to);
+      indegree[to]++;
     }
 
     /**
@@ -38,8 +38,8 @@ public final class TopologicalOrdering {
      */
     public List<Integer> getTopologicalOrdering() {
       Stack<Integer> stack = new Stack<Integer>();
-      boolean[] visited = new boolean[n];
-      for (int i = 0; i < n; i++) {
+      boolean[] visited = new boolean[numVertices];
+      for (int i = 0; i < numVertices; i++) {
         if (!visited[i]) {
           getTopologicalOrderingUtil(i, visited, stack);
         }
@@ -77,7 +77,7 @@ public final class TopologicalOrdering {
      */
     public List<List<Integer>> getAllTopologicalOrderings() {
       List<List<Integer>> allTopologicalOrderings = new LinkedList<List<Integer>>();
-      boolean[] visited = new boolean[n];
+      boolean[] visited = new boolean[numVertices];
       getAllTopologicalOrderingsUtil(new LinkedList<Integer>(), allTopologicalOrderings, visited);
       return allTopologicalOrderings;
     }
@@ -86,11 +86,11 @@ public final class TopologicalOrdering {
         List<Integer> topologicalOrdering,
         List<List<Integer>> allTopologicalOrderings,
         boolean[] visited) {
-      if (topologicalOrdering.size() == n) {
+      if (topologicalOrdering.size() == numVertices) {
         allTopologicalOrderings.add(new LinkedList<Integer>(topologicalOrdering));
         return;
       }
-      for (int i = 0; i < n; i++) {
+      for (int i = 0; i < numVertices; i++) {
         if (indegree[i] == 0 && !visited[i]) {
           topologicalOrdering.add(i);
           visited[i] = true;
@@ -108,7 +108,7 @@ public final class TopologicalOrdering {
     }
 
     public void print() {
-      for (int i = 0; i < n; i++) {
+      for (int i = 0; i < numVertices; i++) {
         System.out.println(i + ": " + adj[i]);
       }
     }
