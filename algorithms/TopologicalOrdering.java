@@ -30,6 +30,19 @@ class Graph {
     indegree[v]++;
   }
 
+  /**
+   * Returns a topological ordering of the graph.
+   *
+   * <p>Executes the following operations:
+   *
+   * <ol>
+   *   <li>Start a DFS from every vertex.
+   *   <li>For each vertex, visit all its neighbors.
+   *   <li>Once done, add the vertex to the stack. This ensures all the dependencies are completed
+   *       before the current vertex.
+   *   <li>Return the stack in reverse order.
+   * </ol>
+   */
   public List<Integer> getTopologicalOrdering() {
     Stack<Integer> stack = new Stack<Integer>();
     boolean[] visited = new boolean[n];
@@ -55,6 +68,19 @@ class Graph {
     stack.push(v);
   }
 
+  /**
+   * Returns all topological orderings of the graph.
+   *
+   * <p>Executes the following operations:
+   *
+   * <ol>
+   *   <li>Start a DFS from every vertex with indegree 0.
+   *   <li>For each vertex, remove it from the graph and update the indegrees of its neighbors.
+   *   <li>Recursively call the function with the updated graph. When all vertices are added to the
+   *       ordering, add the ordering to the list of all orderings.
+   *   <li>Backtrack and restore the graph to its original state.
+   * </ol>
+   */
   public List<List<Integer>> getAllTopologicalOrderings() {
     List<List<Integer>> allTopologicalOrderings = new LinkedList<List<Integer>>();
     boolean[] visited = new boolean[n];
