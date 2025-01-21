@@ -83,20 +83,22 @@ public final class TopologicalOrdering {
     }
 
     private void getAllTopologicalOrderingsUtil(
-        List<Integer> ordering, List<List<Integer>> orderings, boolean[] visited) {
-      if (ordering.size() == n) {
-        orderings.add(new LinkedList<Integer>(ordering));
+        List<Integer> topologicalOrdering,
+        List<List<Integer>> allTopologicalOrderings,
+        boolean[] visited) {
+      if (topologicalOrdering.size() == n) {
+        allTopologicalOrderings.add(new LinkedList<Integer>(topologicalOrdering));
         return;
       }
       for (int i = 0; i < n; i++) {
         if (indegree[i] == 0 && !visited[i]) {
-          ordering.add(i);
+          topologicalOrdering.add(i);
           visited[i] = true;
           for (int j : adj[i]) {
             indegree[j]--;
           }
-          getAllTopologicalOrderingsUtil(ordering, orderings, visited);
-          ordering.remove(ordering.size() - 1);
+          getAllTopologicalOrderingsUtil(topologicalOrdering, allTopologicalOrderings, visited);
+          topologicalOrdering.remove(topologicalOrdering.size() - 1);
           visited[i] = false;
           for (int j : adj[i]) {
             indegree[j]++;
