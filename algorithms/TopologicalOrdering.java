@@ -12,7 +12,7 @@ public final class TopologicalOrdering {
       this.numVertices = numVertices;
       adj = new LinkedList[numVertices];
       for (int i = 0; i < numVertices; i++) {
-        adj[i] = new LinkedList<Integer>();
+        adj[i] = new LinkedList<>();
       }
       indegree = new int[numVertices];
     }
@@ -37,14 +37,14 @@ public final class TopologicalOrdering {
      * </ol>
      */
     public List<Integer> getTopologicalOrdering() {
-      Stack<Integer> stack = new Stack<Integer>();
+      Stack<Integer> stack = new Stack<>();
       boolean[] visited = new boolean[numVertices];
       for (int i = 0; i < numVertices; i++) {
         if (!visited[i]) {
           getTopologicalOrderingUtil(i, visited, stack);
         }
       }
-      List<Integer> topologicalOrdering = new LinkedList<Integer>();
+      List<Integer> topologicalOrdering = new LinkedList<>();
       while (!stack.isEmpty()) {
         topologicalOrdering.add(stack.pop());
       }
@@ -76,9 +76,9 @@ public final class TopologicalOrdering {
      * </ol>
      */
     public List<List<Integer>> getAllTopologicalOrderings() {
-      List<List<Integer>> allTopologicalOrderings = new LinkedList<List<Integer>>();
+      List<List<Integer>> allTopologicalOrderings = new LinkedList<>();
       boolean[] visited = new boolean[numVertices];
-      getAllTopologicalOrderingsUtil(new LinkedList<Integer>(), allTopologicalOrderings, visited);
+      getAllTopologicalOrderingsUtil(new LinkedList<>(), allTopologicalOrderings, visited);
       return allTopologicalOrderings;
     }
 
@@ -87,7 +87,7 @@ public final class TopologicalOrdering {
         List<List<Integer>> allTopologicalOrderings,
         boolean[] visited) {
       if (topologicalOrdering.size() == numVertices) {
-        allTopologicalOrderings.add(new LinkedList<Integer>(topologicalOrdering));
+        allTopologicalOrderings.add(new LinkedList<>(topologicalOrdering));
         return;
       }
       for (int i = 0; i < numVertices; i++) {
